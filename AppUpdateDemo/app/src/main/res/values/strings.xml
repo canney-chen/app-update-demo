@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AAPP Demo</string>
+    <string name="service_host">接口服务地址</string>
+    <string name="update">更新</string>
+</resources>
