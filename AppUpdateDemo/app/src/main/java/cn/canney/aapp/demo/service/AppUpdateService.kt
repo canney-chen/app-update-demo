@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.flow
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.net.ConnectException
 import java.nio.charset.Charset
 
 class AppUpdateService {
@@ -22,10 +23,10 @@ class AppUpdateService {
     ): WebResult<AppVersion>? {
 
         var rawHost: String?
-        var port:Int? = null
+        var port: Int? = null
         host.split(":").apply {
             rawHost = get(0)
-            if(size > 1){
+            if (size > 1) {
                 port = get(1).toInt()
             }
         }
@@ -43,18 +44,28 @@ class AppUpdateService {
 
         val request = Request.Builder().url(url).build()
 
-        val resp = client.newCall(request).execute()
+        try {
+            val resp = client.newCall(request).execute()
 
-        val data = String(resp.body?.bytes()!!, Charset.forName("utf-8"))
+            if(resp.code != 200){
+                return WebResult<AppVersion>().apply{
+                    code = Codes.HTTP_FAILED
+                    message = "调用接口失败:HTTP Status: ${resp.code}"
+                }
+            }
 
-        Log.d(TAG, data)
+            val data = String(resp.body?.bytes()!!, Charset.forName("utf-8"))
+            Log.d(TAG, data)
 
-        return JSON.parseObject(
-            data,
-            object : TypeReference<WebResult<AppVersion>>() {})
+            return JSON.parseObject(
+                data,
+                object : TypeReference<WebResult<AppVersion>>() {})
 
-
+        } catch (e: ConnectException) {
+            return WebResult<AppVersion>().apply{
+                code = Codes.NET_ERROR
+                message = "网络错误"
+            }
+        }
     }
-
-
 }

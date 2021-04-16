@@ -7,41 +7,50 @@ import java.util.*
  * @author: LiShuai
  * @date: 2021/3/4 11:37
  */
-class AppVersion(
+class AppVersion() {
     /**
      * app名称
      */
-    val name: String?,
+    var name: String? = null
+
     /**
      * app唯一标识（即packageName）
      */
-    val appid: String?,
+    var appid: String? = null
+
     /**
      * app版本Code，用于比较当前版本，判断是否升级
      */
-    val versionCode: Int = 0,
+    var versionCode: Int = 0
+
     /**
      * app版本名称
      */
-    val versionName: String?,
+    var versionName: String? = null
+
     /**
      * app发布时间
      */
-    val publishTime: Date?,
+    var publishTime: Date? = null
+
     /**
      * apk下载地址
      */
-    val apkUrl: String?,
+    var apkUrl: String? = null
+
     /**
      * apk大小
      */
-    val apkSize: Double = 0.0,
+    var apkSize: Double = 0.0
+
     /**
      * 更新日志
      */
-    val versionLog: String?,
+    var versionLog: String? = null
+
     /**
      *
      */
-    val versionSlogin: String?
-)
+    var versionSlogin: String? = null
+
+}

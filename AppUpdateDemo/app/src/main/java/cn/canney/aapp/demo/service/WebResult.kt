@@ -8,6 +8,4 @@ class WebResult<T> {
 
     var data: T? = null
 
-
-
 }
